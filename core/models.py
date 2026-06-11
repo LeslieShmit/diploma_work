@@ -1,6 +1,7 @@
 from django.db import models
 
 class SiteContent(models.Model):
+    id = models.SmallIntegerField(primary_key=True, default=1, editable=False)
     restaurant_name = models.CharField(max_length=150, verbose_name='Название ресторана')
     services = models.TextField(verbose_name='Перечень предоставляемых услуг')
     history_text = models.TextField(verbose_name='История ресторана')
