@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import CustomUser
+
+
+@admin.register(CustomUser)
+class CustomUser(admin.ModelAdmin):
+    exclude = ("password",)
+    list_filter = ("id", "email")
