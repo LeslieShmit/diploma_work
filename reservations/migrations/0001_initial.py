@@ -7,38 +7,81 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Reservation',
+            name="Reservation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('reservation_date', models.DateField(verbose_name='Дата бронирования')),
-                ('reservation_time', models.TimeField(verbose_name='Время бронирования')),
-                ('guests', models.PositiveIntegerField(verbose_name='Количество гостей')),
-                ('duration', models.PositiveIntegerField(default=2, verbose_name='Длительность бронирования (часы)')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания бронирования')),
-                ('is_confirmed', models.BooleanField(default=False, verbose_name='Подтверждено')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "reservation_date",
+                    models.DateField(verbose_name="Дата бронирования"),
+                ),
+                (
+                    "reservation_time",
+                    models.TimeField(verbose_name="Время бронирования"),
+                ),
+                (
+                    "guests",
+                    models.PositiveIntegerField(verbose_name="Количество гостей"),
+                ),
+                (
+                    "duration",
+                    models.PositiveIntegerField(
+                        default=2, verbose_name="Длительность бронирования (часы)"
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        verbose_name="Дата и время создания бронирования",
+                    ),
+                ),
+                (
+                    "is_confirmed",
+                    models.BooleanField(default=False, verbose_name="Подтверждено"),
+                ),
             ],
             options={
-                'verbose_name': 'бронирование',
-                'verbose_name_plural': 'бронирования',
-                'ordering': ['created_at'],
+                "verbose_name": "бронирование",
+                "verbose_name_plural": "бронирования",
+                "ordering": ["created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Table',
+            name="Table",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.PositiveIntegerField(verbose_name='Номер столика')),
-                ('seats', models.PositiveIntegerField(verbose_name='Количество посадочных мест')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("number", models.PositiveIntegerField(verbose_name="Номер столика")),
+                (
+                    "seats",
+                    models.PositiveIntegerField(
+                        verbose_name="Количество посадочных мест"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'столик',
-                'verbose_name_plural': 'столики',
-                'ordering': ['number'],
+                "verbose_name": "столик",
+                "verbose_name_plural": "столики",
+                "ordering": ["number"],
             },
         ),
     ]

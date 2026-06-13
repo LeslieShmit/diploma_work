@@ -8,7 +8,7 @@ class Command(BaseCommand):
         User = get_user_model()
         user = User.objects.create(
             email="admin@sky.pro",
-            phone_number='70000000000',
+            phone_number="70000000000",
             first_name="admin",
             last_name="admin",
         )

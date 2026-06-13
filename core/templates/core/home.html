@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+          <div class="col-10 col-sm-8 col-lg-6">
+            <img
+              src="{{ site_content.main_image|media_filter }}"
+              class="d-block mx-lg-auto img-fluid"
+              alt=""
+              width="700"
+              height="500"
+              loading="lazy"
+            />
+          </div>
+          <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+              Добро пожаловать на сайт ресторана {{ site_content.restaurant_name }}
+            </h1>
+            <p class="lead">
+              {{ site_content.about }}
+            </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">
+                Primary
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-lg px-4"
+              >
+                Default
+              </button>
+            </div>
+          </div>
+        </div>
+
+<div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">Наши услуги</h1>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4">
+            {{ site_content.services }}
+          </p>
+        </div>
+      </div>
+<div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">Контакты</h1>
+        <div class="col-lg-6 mx-auto">
+          <ul class="list-group">
+              <li class="list-group-item">Телефон: {{ site_content.phone_number }}</li>
+              <li class="list-group-item">"Электронная почта: {{ site_content.email }}</li>
+          </ul>
+        </div>
+      </div>
+<div class="px-4 py-5 my-5 text-center">
+        <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Свяжитесь с нами</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="" class="form-floating">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name">Имя</label>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone">Телефон</label>
+                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message">Сообщение</label>
+                            <textarea type="text" name="message" class="form-control" id="message" placeholder="Контактный телефон" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
+                    </form>
+                </div>
+            </div>
+      </div>
+
+{% endblock %}
