@@ -4,6 +4,9 @@
         <a class="p-2 btn btn-outline-primary" href="{% url 'core:home' %}">Главная</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'core:about_us' %}">О нас</a>
         {% if user.is_authenticated %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'reservations:availability' %}">Доступность столов</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'reservations:upcoming' %}">Предстоящие бронирования</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'reservations:history' %}">История</a>
         <form method="post" action="{% url 'users:edit_profile' %}" style="display: inline">
             {% csrf_token %}
             <button type="submit" class="p-2 btn btn-outline-primary">Редактировать профиль</button>

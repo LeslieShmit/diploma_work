@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Доступность столов{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <img
+        src="{{ site_content.hall_plan.url }}"
+        class="card-img-top"
+        alt="Схема зала"
+    >
+</div>
+<div class="container my-5">
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <h2 class="card-title mb-4">
+                Доступность столиков
+            </h2>
+            <a
+            href="{% url 'reservations:reservation_create' %}"
+            class="btn btn-success"
+        >
+            Забронировать столик
+        </a>
+
+            <form method="get" class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+                    <label for="date" class="form-label">
+                        Выберите дату
+                    </label>
+
+                    <input
+                        type="date"
+                        class="form-control"
+                        id="date"
+                        name="date"
+                        value="{{ selected_date }}"
+                    >
+                </div>
+
+                <div class="col-md-auto">
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Показать
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% if reservations %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h4 class="mb-3">
+            Бронирования на {{ selected_date }}
+        </h4>
+
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                    <th>Столик</th>
+                    <th>Время</th>
+                    <th>Длительность</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for reservation in reservations %}
+
+                <tr>
+                    <td>{{ reservation.table.number }}</td>
+                    <td>{{ reservation.reservation_time }}</td>
+                    <td>{{ reservation.duration }} ч.</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-success">
+    На выбранную дату бронирований нет.
+</div>
+
+{% endif %}
+{% endblock %}

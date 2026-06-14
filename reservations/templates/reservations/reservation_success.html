@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Бронирование создано
+{% endblock %}
+
+{% block content %}
+
+<div class="alert alert-success text-center">
+    <h2>Бронирование успешно создано!</h2>
+
+    <p>
+        Через 5 секунд вы будете перенаправлены на главную страницу.
+    </p>
+</div>
+
+<meta
+    http-equiv="refresh"
+    content="5;url={% url 'core:home' %}"
+>
+
+{% endblock %}

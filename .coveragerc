@@ -1,0 +1,6 @@
+[run]
+omit =
+    */migrations/*
+    */core/*
+    */venv/*
+    */tests/*
