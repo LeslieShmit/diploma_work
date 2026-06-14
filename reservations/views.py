@@ -7,6 +7,8 @@ from .mixins import OwnerRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.http import Http404
+from django.core.exceptions import PermissionDenied
+from .utils import can_view_all_reservations
 
 
 class AvailabilityView(ListView):
@@ -66,10 +68,13 @@ class ReservationCreateView(CreateView):
     success_url = reverse_lazy("reservations:reservation_success")
 
     def form_valid(self, form):
-        reservation = form.save(commit=False)
-        user = self.request.user
-        reservation.user = user
-        reservation.save()
+        form.instance.user = self.request.user
+
+        if self.request.user.has_perm(
+                "reservations.make_phone_reservations"
+        ):
+            form.instance.is_mady_by_staff = True
+
         return super().form_valid(form)
 
 
@@ -87,6 +92,23 @@ class ReservationDetailView(DetailView):
     model = Reservation
     context_object_name = "reservation"
     template_name = "reservations/reservation_detail.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        reservation = self.get_object()
+
+        if (
+                reservation.user != request.user
+                and not can_view_all_reservations(
+            request.user
+        )
+        ):
+            raise PermissionDenied
+
+        return super().dispatch(
+            request,
+            *args,
+            **kwargs
+        )
 
 class ReservationDeleteView(OwnerRequiredMixin, DeleteView):
     model = Reservation
@@ -129,7 +151,9 @@ class HistoryView(ListView):
             reservation_date__lt=today
         ).order_by("-reservation_date", "-reservation_time")
 
-        if self.request.user.is_staff:
+        if can_view_all_reservations(
+                self.request.user
+        ):
             return queryset
 
         return queryset.filter(user=self.request.user)
@@ -160,7 +184,9 @@ class UpcomingView(ListView):
             reservation_date__gte=today
         ).order_by("reservation_date", "reservation_time")
 
-        if self.request.user.is_staff:
+        if can_view_all_reservations(
+                self.request.user
+        ):
             return queryset
 
         return queryset.filter(user=self.request.user)

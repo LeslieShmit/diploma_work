@@ -119,3 +119,13 @@ class Reservation(models.Model):
         ordering = [
             "created_at",
         ]
+        permissions = [
+            (
+                "view_all_reservations",
+                "Can view all reservations",
+            ),
+            (
+                "make_phone_reservations",
+                "Can create phone reservations",
+            ),
+        ]
