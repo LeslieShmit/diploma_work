@@ -64,7 +64,7 @@
             <th>Дата</th>
             <th>Время</th>
 
-            {% if user.is_staff %}
+            {% if perms.reservations.view_all_reservations %}
                 <th>Имя</th>
                 <th>Фамилия</th>
                 <th>Телефон</th>
@@ -84,7 +84,7 @@
             <td>{{ reservation.reservation_date }}</td>
             <td>{{ reservation.reservation_time }}</td>
 
-            {% if user.is_staff %}
+            {% if perms.reservations.view_all_reservations %}
                 <td>{{ reservation.user.first_name }}</td>
                 <td>{{ reservation.user.last_name }}</td>
                 <td>{{ reservation.user.phone_number }}</td>

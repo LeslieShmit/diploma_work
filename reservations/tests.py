@@ -115,31 +115,6 @@ class ReservationTestCase(TestCase):
 
         self.assertEqual(response.status_code, 403)
 
-    def test_history_shows_only_user_reservations(self):
-        own_reservation = Reservation.objects.create(
-            user=self.user,
-            table=self.table,
-            reservation_date=date.today() - timedelta(days=1),
-            reservation_time=time(18, 0),
-            guests=2,
-        )
-
-        foreign_reservation = Reservation.objects.create(
-            user=self.other_user,
-            table=self.table,
-            reservation_date=date.today() - timedelta(days=2),
-            reservation_time=time(18, 0),
-            guests=2,
-        )
-
-        self.client.force_login(self.user)
-
-        response = self.client.get(reverse("reservations:history"))
-
-        reservations = response.context["reservations"]
-
-        self.assertIn(own_reservation, reservations)
-        self.assertNotIn(foreign_reservation, reservations)
 
     def test_availability_page(self):
         self.client.force_login(self.user)

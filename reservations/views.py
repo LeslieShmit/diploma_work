@@ -138,23 +138,32 @@ class HistoryView(ListView):
     def get_queryset(self):
         today = timezone.localdate()
 
-        queryset = Reservation.objects.filter(reservation_date__lt=today).order_by(
-            "-reservation_date", "-reservation_time"
+        queryset = Reservation.objects.filter(
+            reservation_date__lt=today
+        ).order_by(
+            "-reservation_date",
+            "-reservation_time"
         )
 
-        if can_view_all_reservations(self.request.user):
-            return queryset
+        if not can_view_all_reservations(self.request.user):
+            queryset = queryset.filter(
+                user=self.request.user
+            )
 
-        return queryset.filter(user=self.request.user)
+        date_from = self.request.GET.get("date_from")
+        date_to = self.request.GET.get("date_to")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        if date_from:
+            queryset = queryset.filter(
+                reservation_date__gte=date_from
+            )
 
-        context["date_from"] = self.request.GET.get("date_from", "")
+        if date_to:
+            queryset = queryset.filter(
+                reservation_date__lte=date_to
+            )
 
-        context["date_to"] = self.request.GET.get("date_to", "")
-
-        return context
+        return queryset
 
 
 class UpcomingView(ListView):
@@ -166,20 +175,29 @@ class UpcomingView(ListView):
     def get_queryset(self):
         today = timezone.localdate()
 
-        queryset = Reservation.objects.filter(reservation_date__gte=today).order_by(
-            "reservation_date", "reservation_time"
+        queryset = Reservation.objects.filter(
+            reservation_date__gte=today
+        ).order_by(
+            "reservation_date",
+            "reservation_time"
         )
 
-        if can_view_all_reservations(self.request.user):
-            return queryset
+        if not can_view_all_reservations(self.request.user):
+            queryset = queryset.filter(
+                user=self.request.user
+            )
 
-        return queryset.filter(user=self.request.user)
+        date_from = self.request.GET.get("date_from")
+        date_to = self.request.GET.get("date_to")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        if date_from:
+            queryset = queryset.filter(
+                reservation_date__gte=date_from
+            )
 
-        context["date_from"] = self.request.GET.get("date_from", "")
+        if date_to:
+            queryset = queryset.filter(
+                reservation_date__lte=date_to
+            )
 
-        context["date_to"] = self.request.GET.get("date_to", "")
-
-        return context
+        return queryset
