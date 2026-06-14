@@ -2,6 +2,7 @@ from django.db import models
 
 
 class SiteContent(models.Model):
+    """Модель для наполнения сайта контентом. Может существовать тоько в единственном экземпляре"""
     id = models.SmallIntegerField(primary_key=True, default=1, editable=False)
     restaurant_name = models.CharField(
         max_length=150, verbose_name="Название ресторана"
@@ -34,6 +35,7 @@ class SiteContent(models.Model):
 
 
 class TeamMember(models.Model):
+    """Модель сотрудника ресторана для заполнения раздела 'наша команда'"""
     first_name = models.CharField(max_length=15, verbose_name="Имя")
     last_name = models.CharField(max_length=30, verbose_name="Фамилия")
     position = models.CharField(max_length=30, verbose_name="Должность")
@@ -53,6 +55,7 @@ class TeamMember(models.Model):
 
 
 class Feedback(models.Model):
+    """Модель для обратной связи от посетителей сервиса"""
     name = models.CharField(max_length=15, verbose_name="Имя")
     phone_number = models.CharField(max_length=15, verbose_name="Номер телефона")
     message = models.TextField(verbose_name="Сообщение")

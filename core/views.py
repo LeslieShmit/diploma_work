@@ -8,6 +8,7 @@ from .models import Feedback, TeamMember
 
 
 class HomePageView(TemplateView):
+    """Класс представления домашней страницы"""
     template_name = "core/home.html"
 
     def post(self, request):
@@ -38,6 +39,7 @@ class HomePageView(TemplateView):
 
 
 class AboutUsView(ListView):
+    """Класс представления странцы 'О нас'"""
     model = TeamMember
     context_object_name = "team_members"
     template_name = "core/about_us.html"
