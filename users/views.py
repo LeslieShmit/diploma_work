@@ -35,11 +35,11 @@ class EditUserView(LoginRequiredMixin, UpdateView):
 
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = CustomUser
-    context_object_name = "user"
-    template_name = "users/user_details.html"
-
-    def get_object(self, queryset=None):
-        return self.request.user
+# class UserDetailView(LoginRequiredMixin, DetailView):
+#     model = CustomUser
+#     context_object_name = "user"
+#     template_name = "users/user_details.html"
+#
+#     def get_object(self, queryset=None):
+#         return self.request.user
 
