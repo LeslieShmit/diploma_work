@@ -12,7 +12,14 @@ class CustomUserCreationForm(FormStyleMixin, UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ("email","first_name", "last_name", "phone_number", "password1", "password2")
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "password1",
+            "password2",
+        )
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get("phone_number")
@@ -37,7 +44,8 @@ class CustomUserChangeForm(FormStyleMixin, UserChangeForm):
         fields = (
             "email",
             "phone_number",
-            "first_name", "last_name",
+            "first_name",
+            "last_name",
             "avatar",
         )
 

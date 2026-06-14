@@ -1,12 +1,12 @@
 from datetime import date, time, timedelta
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
 from django.core.exceptions import ValidationError
-from reservations.forms import ReservationForm
+from django.test import TestCase
 from django.urls import reverse
 
-from reservations.models import Table, Reservation
+from reservations.forms import ReservationForm
+from reservations.models import Reservation, Table
 
 User = get_user_model()
 
@@ -19,14 +19,14 @@ class ReservationTestCase(TestCase):
             email="user@test.com",
             phone_number="+79999999999",
             first_name="Ivan",
-            password="12345"
+            password="12345",
         )
 
         self.other_user = User.objects.create_user(
             email="other@test.com",
             phone_number="+78888888888",
             first_name="Petr",
-            password="12345"
+            password="12345",
         )
 
         self.table = Table.objects.create(
@@ -110,10 +110,7 @@ class ReservationTestCase(TestCase):
         self.client.force_login(self.user)
 
         response = self.client.get(
-            reverse(
-                "reservations:reservation_edit",
-                args=[reservation.pk]
-            )
+            reverse("reservations:reservation_edit", args=[reservation.pk])
         )
 
         self.assertEqual(response.status_code, 403)
@@ -137,9 +134,7 @@ class ReservationTestCase(TestCase):
 
         self.client.force_login(self.user)
 
-        response = self.client.get(
-            reverse("reservations:history")
-        )
+        response = self.client.get(reverse("reservations:history"))
 
         reservations = response.context["reservations"]
 
@@ -149,9 +144,7 @@ class ReservationTestCase(TestCase):
     def test_availability_page(self):
         self.client.force_login(self.user)
 
-        response = self.client.get(
-            reverse("reservations:availability")
-        )
+        response = self.client.get(reverse("reservations:availability"))
 
         self.assertEqual(response.status_code, 200)
 
@@ -180,9 +173,7 @@ class ReservationTestCase(TestCase):
     def test_upcoming_view(self):
         self.client.force_login(self.user)
 
-        response = self.client.get(
-            reverse("reservations:upcoming")
-        )
+        response = self.client.get(reverse("reservations:upcoming"))
 
         self.assertEqual(response.status_code, 200)
 

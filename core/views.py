@@ -1,17 +1,19 @@
-from django.views import View
-from django.views.generic import DetailView, ListView, TemplateView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.shortcuts import redirect
 from django.core.mail import send_mail
+from django.shortcuts import redirect
+
+from django.views.generic import ListView, TemplateView
+
+
 from .models import Feedback, TeamMember
+
 
 class HomePageView(TemplateView):
     template_name = "core/home.html"
 
     def post(self, request):
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
 
         Feedback.objects.create(
             name=name,
@@ -32,11 +34,12 @@ class HomePageView(TemplateView):
             recipient_list=["restaurant@example.com"],
         )
 
-        return redirect('core:home')
+        return redirect("core:home")
+
 
 class AboutUsView(ListView):
     model = TeamMember
-    context_object_name = 'team_members'
-    template_name = 'core/about_us.html'
-    ordering = ['last_name']
+    context_object_name = "team_members"
+    template_name = "core/about_us.html"
+    ordering = ["last_name"]
     paginate_by = 2

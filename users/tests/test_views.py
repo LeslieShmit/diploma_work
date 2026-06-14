@@ -3,8 +3,8 @@ from django.urls import reverse
 
 from users.models import CustomUser
 
-class UserViewsTestCase(TestCase):
 
+class UserViewsTestCase(TestCase):
 
     def setUp(self):
         self.user = CustomUser.objects.create_user(
@@ -33,9 +33,7 @@ class UserViewsTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(
-            CustomUser.objects.filter(email="new@example.com").exists()
-        )
+        self.assertTrue(CustomUser.objects.filter(email="new@example.com").exists())
 
     def test_login_page_opens(self):
         response = self.client.get(reverse("users:login"))
@@ -111,5 +109,3 @@ class UserViewsTestCase(TestCase):
         )
 
         response = self.client.get(reverse("users:logout"))
-
-

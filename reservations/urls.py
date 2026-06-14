@@ -1,7 +1,15 @@
-
 from django.urls import path
 
-from .views import AvailabilityView, ReservationCreateView, ReservationUpdateView, ReservationSuccessView, ReservationDetailView, ReservationDeleteView, HistoryView, UpcomingView
+from .views import (
+    AvailabilityView,
+    HistoryView,
+    ReservationCreateView,
+    ReservationDeleteView,
+    ReservationDetailView,
+    ReservationSuccessView,
+    ReservationUpdateView,
+    UpcomingView,
+)
 
 app_name = "reservations"
 
@@ -15,5 +23,9 @@ urlpatterns = [
     path("<int:pk>/edit/", ReservationUpdateView.as_view(), name="reservation_edit"),
     path("history/", HistoryView.as_view(), name="history"),
     path("upcoming/", UpcomingView.as_view(), name="upcoming"),
-path("reservation/success/", ReservationSuccessView.as_view(), name="reservation_success"),
+    path(
+        "reservation/success/",
+        ReservationSuccessView.as_view(),
+        name="reservation_success",
+    ),
 ]

@@ -54,6 +54,6 @@ class TeamMember(models.Model):
 
 class Feedback(models.Model):
     name = models.CharField(max_length=15, verbose_name="Имя")
-    phone_number = models.CharField( max_length=15, verbose_name="Номер телефона")
+    phone_number = models.CharField(max_length=15, verbose_name="Номер телефона")
     message = models.TextField(verbose_name="Сообщение")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")

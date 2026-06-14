@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from django import forms
 from django.utils import timezone
-from datetime import datetime
 
 from .mixins import FormStyleMixin
 from .models import Reservation
+
 
 class ReservationForm(FormStyleMixin, forms.ModelForm):
     placeholder_fields = {
@@ -37,7 +39,10 @@ class ReservationForm(FormStyleMixin, forms.ModelForm):
 
     class Meta:
         model = Reservation
-        exclude = ["user", "is_mady_by_staff",]
+        exclude = [
+            "user",
+            "is_mady_by_staff",
+        ]
 
     def clean(self):
         cleaned_data = super().clean()

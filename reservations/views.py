@@ -1,13 +1,15 @@
-from django.views.generic import DetailView, ListView, TemplateView
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from .models import Reservation
-from .forms import ReservationForm
 from datetime import date
-from .mixins import OwnerRequiredMixin
+
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.http import Http404
-from django.core.exceptions import PermissionDenied
+from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from .forms import ReservationForm
+from .mixins import OwnerRequiredMixin
+from .models import Reservation
 from .utils import can_view_all_reservations
 
 
@@ -17,7 +19,7 @@ class AvailabilityView(ListView):
     context_object_name = "reservations"
 
     def get_queryset(self):
-        selected_date = ( self.request.GET.get("date") or date.today() )
+        selected_date = self.request.GET.get("date") or date.today()
 
         if selected_date:
             return Reservation.objects.filter(
@@ -33,12 +35,12 @@ class AvailabilityView(ListView):
 
         return context
 
+
 class ReservationUpdateView(OwnerRequiredMixin, UpdateView):
     model = Reservation
     template_name = "reservations/form.html"
     form_class = ReservationForm
     success_url = reverse_lazy("reservations:upcoming")
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,15 +53,14 @@ class ReservationUpdateView(OwnerRequiredMixin, UpdateView):
         reservation = self.get_object()
 
         if reservation.is_past:
-            raise Http404(
-                "Нельзя редактировать завершенное бронирование"
-            )
+            raise Http404("Нельзя редактировать завершенное бронирование")
 
         return super().dispatch(
             request,
             *args,
             **kwargs,
         )
+
 
 class ReservationCreateView(CreateView):
     model = Reservation
@@ -70,13 +71,10 @@ class ReservationCreateView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
 
-        if self.request.user.has_perm(
-                "reservations.make_phone_reservations"
-        ):
+        if self.request.user.has_perm("reservations.make_phone_reservations"):
             form.instance.is_mady_by_staff = True
 
         return super().form_valid(form)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,8 +83,10 @@ class ReservationCreateView(CreateView):
         context["cancel_url"] = reverse("reservations:availability")
         return context
 
+
 class ReservationSuccessView(TemplateView):
     template_name = "reservations/reservation_success.html"
+
 
 class ReservationDetailView(DetailView):
     model = Reservation
@@ -96,19 +96,13 @@ class ReservationDetailView(DetailView):
     def dispatch(self, request, *args, **kwargs):
         reservation = self.get_object()
 
-        if (
-                reservation.user != request.user
-                and not can_view_all_reservations(
+        if reservation.user != request.user and not can_view_all_reservations(
             request.user
-        )
         ):
             raise PermissionDenied
 
-        return super().dispatch(
-            request,
-            *args,
-            **kwargs
-        )
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ReservationDeleteView(OwnerRequiredMixin, DeleteView):
     model = Reservation
@@ -126,16 +120,13 @@ class ReservationDeleteView(OwnerRequiredMixin, DeleteView):
         reservation = self.get_object()
 
         if reservation.is_past:
-            raise Http404(
-                "Нельзя удалить завершенное бронирование"
-            )
+            raise Http404("Нельзя удалить завершенное бронирование")
 
         return super().dispatch(
             request,
             *args,
             **kwargs,
         )
-
 
 
 class HistoryView(ListView):
@@ -147,13 +138,11 @@ class HistoryView(ListView):
     def get_queryset(self):
         today = timezone.localdate()
 
-        queryset = Reservation.objects.filter(
-            reservation_date__lt=today
-        ).order_by("-reservation_date", "-reservation_time")
+        queryset = Reservation.objects.filter(reservation_date__lt=today).order_by(
+            "-reservation_date", "-reservation_time"
+        )
 
-        if can_view_all_reservations(
-                self.request.user
-        ):
+        if can_view_all_reservations(self.request.user):
             return queryset
 
         return queryset.filter(user=self.request.user)
@@ -161,15 +150,12 @@ class HistoryView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["date_from"] = self.request.GET.get(
-            "date_from", ""
-        )
+        context["date_from"] = self.request.GET.get("date_from", "")
 
-        context["date_to"] = self.request.GET.get(
-            "date_to", ""
-        )
+        context["date_to"] = self.request.GET.get("date_to", "")
 
         return context
+
 
 class UpcomingView(ListView):
     model = Reservation
@@ -180,13 +166,11 @@ class UpcomingView(ListView):
     def get_queryset(self):
         today = timezone.localdate()
 
-        queryset = Reservation.objects.filter(
-            reservation_date__gte=today
-        ).order_by("reservation_date", "reservation_time")
+        queryset = Reservation.objects.filter(reservation_date__gte=today).order_by(
+            "reservation_date", "reservation_time"
+        )
 
-        if can_view_all_reservations(
-                self.request.user
-        ):
+        if can_view_all_reservations(self.request.user):
             return queryset
 
         return queryset.filter(user=self.request.user)
@@ -194,12 +178,8 @@ class UpcomingView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["date_from"] = self.request.GET.get(
-            "date_from", ""
-        )
+        context["date_from"] = self.request.GET.get("date_from", "")
 
-        context["date_to"] = self.request.GET.get(
-            "date_to", ""
-        )
+        context["date_to"] = self.request.GET.get("date_to", "")
 
         return context

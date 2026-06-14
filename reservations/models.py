@@ -1,8 +1,10 @@
-from django.db import models
-from django.conf import settings
 from datetime import datetime, timedelta
+
+from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.utils import timezone
+
 
 class Table(models.Model):
     """Модель для отдельного столика"""
@@ -97,17 +99,11 @@ class Reservation(models.Model):
                 reservation.reservation_time,
             )
 
-            existing_end = (
-                    existing_start +
-                    timedelta(hours=reservation.duration)
-            )
+            existing_end = existing_start + timedelta(hours=reservation.duration)
 
             if start < existing_end and end > existing_start:
                 raise ValidationError(
-                    {
-                        "reservation_time":
-                            "Столик уже забронирован на выбранное время."
-                    }
+                    {"reservation_time": "Столик уже забронирован на выбранное время."}
                 )
 
     def __str__(self):
