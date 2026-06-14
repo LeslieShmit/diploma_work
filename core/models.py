@@ -27,7 +27,7 @@ class SiteContent(models.Model):
 
     class Meta:
         verbose_name = "Наполнение сайта"
-        verbose_name_plural = "Наполнения сайта"
+        verbose_name_plural = "Наполнение сайта"
 
     def __str__(self):
         return "Наполнение сайта"
@@ -44,6 +44,9 @@ class TeamMember(models.Model):
     class Meta:
         verbose_name = "Сотрудник"
         verbose_name_plural = "Сотрудники"
+        ordering = [
+            "last_name",
+        ]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -51,8 +54,6 @@ class TeamMember(models.Model):
 
 class Feedback(models.Model):
     name = models.CharField(max_length=15, verbose_name="Имя")
-    phone_number = models.CharField(
-        unique=True, max_length=15, verbose_name="Номер телефона"
-    )
+    phone_number = models.CharField( max_length=15, verbose_name="Номер телефона")
     message = models.TextField(verbose_name="Сообщение")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")

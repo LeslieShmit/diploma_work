@@ -1,7 +1,7 @@
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.core.mail import send_mail
 from .models import Feedback, TeamMember
 
@@ -32,13 +32,11 @@ class HomePageView(TemplateView):
             recipient_list=["restaurant@example.com"],
         )
 
-        return HttpResponse(
-            f'{name}, спасибо за сообщение!'
-        )
+        return redirect('core:home')
 
 class AboutUsView(ListView):
     model = TeamMember
     context_object_name = 'team_members'
     template_name = 'core/about_us.html'
     ordering = ['last_name']
-    paginate_by = 5
+    paginate_by = 2

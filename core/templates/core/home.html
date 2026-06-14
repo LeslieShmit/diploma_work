@@ -3,7 +3,7 @@
 <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-10 col-sm-8 col-lg-6">
             <img
-              src="{{ site_content.main_image|media_filter }}"
+              src="{{ site_content.main_image.url }}"
               class="d-block mx-lg-auto img-fluid"
               alt=""
               width="700"
@@ -18,17 +18,6 @@
             <p class="lead">
               {{ site_content.about }}
             </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">
-                Primary
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-secondary btn-lg px-4"
-              >
-                Default
-              </button>
-            </div>
           </div>
         </div>
 
