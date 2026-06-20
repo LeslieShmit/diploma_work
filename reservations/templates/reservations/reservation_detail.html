@@ -1,0 +1,117 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Детали бронирования{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+        <h3 class="mb-0">
+            Бронирование №{{ object.pk }}
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            <strong>Столик:</strong>
+            №{{ object.table.number }}
+        </p>
+
+        <p>
+            <strong>Дата:</strong>
+            {{ object.reservation_date }}
+        </p>
+
+        <p>
+            <strong>Время:</strong>
+            {{ object.reservation_time }}
+        </p>
+
+        <p>
+            <strong>Количество гостей:</strong>
+            {{ object.guests }}
+        </p>
+
+        <p>
+            <strong>Длительность:</strong>
+            {{ object.duration }} ч.
+        </p>
+
+        {% if object.notes %}
+        <p>
+            <strong>Комментарий:</strong>
+            {{ object.notes }}
+        </p>
+        {% endif %}
+
+        {% if user.is_staff %}
+
+        <hr>
+
+        <p>
+            <strong>Имя:</strong>
+            {{ object.user.first_name }}
+        </p>
+
+        <p>
+            <strong>Фамилия:</strong>
+            {{ object.user.last_name }}
+        </p>
+
+        <p>
+            <strong>Телефон:</strong>
+            {{ object.user.phone_number }}
+        </p>
+
+        <p>
+            <strong>Создано сотрудником:</strong>
+
+            {% if object.is_mady_by_staff %}
+                Да
+            {% else %}
+                Нет
+            {% endif %}
+        </p>
+
+        {% endif %}
+
+    </div>
+
+    <div class="card-footer">
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="{% if object.is_past %}{% url 'reservations:history' %}{% else %}{% url 'reservations:upcoming' %}{% endif %}"
+                class="btn btn-secondary"
+            >
+                Назад
+            </a>
+
+            {% if not object.is_past %}
+
+            <a
+                href="{% url 'reservations:reservation_edit' object.pk %}"
+                class="btn btn-warning"
+            >
+                Изменить
+            </a>
+
+            <a
+                href="{% url 'reservations:reservation_delete' object.pk %}"
+                class="btn btn-danger"
+            >
+                Удалить
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

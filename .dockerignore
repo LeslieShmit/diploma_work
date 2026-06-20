@@ -1,0 +1,11 @@
+.venv
+**pycache**
+*.pyc
+.git
+.gitignore
+.idea
+htmlcov
+.coverage
+db.sqlite3
+media
+staticfiles

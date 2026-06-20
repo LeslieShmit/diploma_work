@@ -1,0 +1,117 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Предстоящие бронирования{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card mb-4">
+    <div class="card-body">
+
+        <form method="get" class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label">
+                    С даты
+                </label>
+
+                <input
+                    type="date"
+                    name="date_from"
+                    value="{{ date_from }}"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">
+                    По дату
+                </label>
+
+                <input
+                    type="date"
+                    name="date_to"
+                    value="{{ date_to }}"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary me-2"
+                >
+                    Фильтровать
+                </button>
+
+                <a
+                    href="{% url 'reservations:history' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Сбросить
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Столик</th>
+            <th>Дата</th>
+            <th>Время</th>
+
+            {% if perms.reservations.view_all_reservations %}
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Телефон</th>
+                <th>Создано сотрудником</th>
+            {% endif %}
+
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for reservation in reservations %}
+
+        <tr>
+            <td>{{ reservation.table.number }}</td>
+            <td>{{ reservation.reservation_date }}</td>
+            <td>{{ reservation.reservation_time }}</td>
+
+            {% if perms.reservations.view_all_reservations %}
+                <td>{{ reservation.user.first_name }}</td>
+                <td>{{ reservation.user.last_name }}</td>
+                <td>{{ reservation.user.phone_number }}</td>
+                <td>
+                    {% if reservation.is_mady_by_staff %}
+                        Да
+                    {% else %}
+                        Нет
+                    {% endif %}
+                </td>
+            {% endif %}
+
+            <td>
+                <a
+                    href="{% url 'reservations:reservation_details' reservation.pk %}"
+                    class="btn btn-sm btn-primary"
+                >
+                    Подробнее
+                </a>
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
+    </div>
+    {% include "includes/pagination.html" %}
+{% endblock %}
