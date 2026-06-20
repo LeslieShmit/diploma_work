@@ -36,7 +36,7 @@
 ## Установка
 1. Клонируйте репозиторий
 ```
-1. git clone git@github.com:LeslieShmit/diploma_work.git
+1. git clone git@github.com:LeslieShmit/restaurant_site.git
 ```
 2. Установите зависимости
 ```
